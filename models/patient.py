@@ -1,6 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, tools
 from odoo.exceptions import ValidationError
-from datetime import date
 
 class HmsPatient(models.Model):
     _name = 'hms.patient'
@@ -14,6 +13,7 @@ class HmsPatient(models.Model):
 
     history = fields.Html()
 
+    email = fields.Char(string="Email")
 
     pcr = fields.Boolean()
 
@@ -63,17 +63,30 @@ class HmsPatient(models.Model):
         'patient_id'
     )
 
-     @api.depends('birth_date')
+    @api.depends('birth_date')
     def _compute_age(self):
         for patient in self:
             if patient.birth_date:
-                today = fields.Date.today()
+                today = fields.Date.context_today(patient)
                 patient.age = today.year - patient.birth_date.year - (
                     (today.month, today.day) < (patient.birth_date.month, patient.birth_date.day)
                 )
             else:
                 patient.age = 0
 
+    @api.constrains('email')
+    def _check_email(self):
+        for patient in self:
+            if patient.email:
+                if not tools.email_validate(patient.email):
+                    raise ValidationError('Please enter a valid email address.')
+                # Check uniqueness
+                existing = self.env['hms.patient'].search([
+                    ('email', '=', patient.email),
+                    ('id', '!=', patient.id),
+                ])
+                if existing:
+                    raise ValidationError('This email address already exists in another patient record.')
 
     @api.constrains('pcr', 'cr_ratio')
     def check_cr_ratio(self):
