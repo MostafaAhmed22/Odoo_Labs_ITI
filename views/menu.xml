@@ -10,7 +10,8 @@
     <menuitem id="hms_doctor_menu"
               name="Doctors"
               parent="hms_main_menu"
-              action="action_hms_doctor"/>
+              action="action_hms_doctor"
+              groups="group_hms_manager"/>
 
     <menuitem id="hms_patient_menu"
               name="Patients"

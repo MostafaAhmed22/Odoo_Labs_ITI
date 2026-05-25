@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- HMS User Group -->
+        <record id="group_hms_user" model="res.groups">
+            <field name="name">HMS User</field>
+            <field name="category_id" ref="base.module_category_sales"/>
+            <field name="comment">Basic user with access to own patients and read-only access to departments and doctors</field>
+        </record>
+
+        <!-- HMS Manager Group -->
+        <record id="group_hms_manager" model="res.groups">
+            <field name="name">HMS Manager</field>
+            <field name="category_id" ref="base.module_category_sales"/>
+            <field name="comment">Manager with full access to all patients, departments, and doctors</field>
+        </record>
+    </data>
+</odoo>

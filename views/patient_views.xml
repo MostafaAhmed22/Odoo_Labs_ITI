@@ -31,7 +31,8 @@
                             <field name="department_capacity" readonly="1"/>
                             <field name="doctor_ids"
                                    widget="many2many_tags"
-                                   readonly="not department_id"/>
+                                   readonly="not department_id"
+                                   groups="group_hms_manager"/>
                         </group>
                     </group>
                     <group>
